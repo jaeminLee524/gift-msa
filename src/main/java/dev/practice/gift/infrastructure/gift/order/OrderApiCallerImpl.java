@@ -1,12 +1,14 @@
 package dev.practice.gift.infrastructure.gift.order;
 
 import dev.practice.gift.common.response.CommonResponse;
+import dev.practice.gift.domain.gift.GiftCommand;
 import dev.practice.gift.domain.gift.order.OrderApiCaller;
 import dev.practice.gift.domain.gift.order.OrderApiCommand;
 import dev.practice.gift.infrastructure.retrofit.RetrofitUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import retrofit2.Call;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,7 +29,8 @@ public class OrderApiCallerImpl implements OrderApiCaller {
     }
 
     @Override
-    public void updateReceiverInfo() {
-
+    public void updateReceiverInfo(String orderToken, GiftCommand.AcceptGift acceptGiftCommand) {
+        Call<Void> call = retrofitOrderApi.updateReceiverInfo(orderToken, acceptGiftCommand);
+        retrofitUtil.responseVoid(call);
     }
 }
