@@ -1,5 +1,6 @@
 package dev.practice.gift.interfaces.gift;
 
+import dev.practice.gift.domain.gift.Gift;
 import dev.practice.gift.domain.gift.GiftInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,10 +11,12 @@ import java.util.List;
 
 public class GiftDto {
 
+    /** request **/
+
     @Getter @Builder
     public static class RegisterReq {
         @NotNull(message = "userId 는 필수값입니다")
-        private Long buyerId;
+        private Long buyerUserId;
 
         @NotBlank(message = "payMethod 는 필수값입니다")
         private String payMethod;
@@ -57,7 +60,7 @@ public class GiftDto {
 
         @NotBlank(message = "itemOptionGroupName 는 필수값입니다")
         private String itemOptionGroupName;
-        private List<RegisterOrderItemOptionReq> orderItemOptionReqList;
+        private List<RegisterOrderItemOptionReq> orderItemOptionList;
     }
 
     @Getter
@@ -73,7 +76,29 @@ public class GiftDto {
         private Long itemOptionPrice;
     }
 
+    @Getter @Builder
+    public static class AcceptGiftReq {
+        @NotBlank(message = "receiverName 는 필수값입니다")
+        private String receiverName;
 
+        @NotBlank(message = "receiverPhone 는 필수값입니다")
+        private String receiverPhone;
+
+        @NotBlank(message = "receiverZipcode 는 필수값입니다")
+        private String receiverZipcode;
+
+        @NotBlank(message = "receiverAddress1 는 필수값입니다")
+        private String receiverAddress1;
+
+        @NotBlank(message = "receiverAddress2 는 필수값입니다")
+        private String receiverAddress2;
+
+        @NotBlank(message = "etcMessage 는 필수값입니다")
+        private String etcMessage;
+    }
+
+
+    /** response**/
     public static class RegisterRes {
         private String orderToken;
         private String giftToken;
@@ -82,5 +107,15 @@ public class GiftDto {
             this.orderToken = giftInfo.getOrderToken();
             this.giftToken = giftInfo.getGiftToken();
         }
+    }
+
+    @Getter @Builder
+    public static class RetrieveOrderRes {
+        private String orderToken;
+        private String giftToken;
+        private Gift.PushType pushType;
+        private String giftReceiverName;
+        private String giftReceiverPhone;
+        private String giftMessage;
     }
 }
