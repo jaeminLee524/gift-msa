@@ -18,4 +18,16 @@ public class GiftFacade {
         log.info("giftInfo.orderToken={}", giftInfo);
         return giftInfo;
     }
+
+    public void requestPaymentProcessing(String giftToken) {
+        giftService.requestPaymentProcessing(giftToken);
+    }
+
+    public void acceptGift(GiftCommand.AcceptGift acceptCommand) {
+        giftService.acceptGift(acceptCommand);
+    }
+
+    public GiftInfo retrieveOrder(String giftToken) {
+        return giftService.getGiftInfo(giftToken);
+    }
 }
