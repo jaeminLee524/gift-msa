@@ -1,5 +1,6 @@
 package dev.practice.gift.domain.gift;
 
+import dev.practice.gift.common.exception.IllegalStatusException;
 import dev.practice.gift.common.exception.InvalidParamException;
 import dev.practice.gift.common.util.TokenGenerator;
 import dev.practice.gift.domain.AbstractEntity;
@@ -58,8 +59,7 @@ public class Gift extends AbstractEntity {
         DELIVERY_PREPARE("상품 준비"),
         IN_DELIVERY("배송 중"),
         DELIVERY_COMPLETE("배송 완료"),
-        EXPIRATION("선물 수락 만료 "),
-        ;
+        EXPIRATION("선물 수락 만료 ");
 
         private final String description;
     }
@@ -93,6 +93,36 @@ public class Gift extends AbstractEntity {
         if (StringUtils.isEmpty(giftMessage)) throw new InvalidParamException("Gift constructor giftMessage is empty");
 
         return new Gift(buyerUserId, orderToken, pushType, giftReceiverName, giftReceiverPhone, giftMessage);
+    }
+
+    /** [결제 중] 으로 상태 변경 **/
+    public void inPayment() {
+        this.status = Status.IN_PAYMENT;
+    }
+
+    /** 선물 수락 **/
+    public void accept(GiftCommand.AcceptGift acceptCommand) {
+        if (!isAcceptable()) throw new IllegalStatusException();
+        if (StringUtils.isEmpty(acceptCommand.getReceiverName())) throw new InvalidParamException("Gift accept receiverName is empty");
+        if (StringUtils.isEmpty(acceptCommand.getReceiverPhone())) throw new InvalidParamException("Gift accept getReceiverPhone is empty");
+        if (StringUtils.isEmpty(acceptCommand.getReceiverZipcode())) throw new InvalidParamException("Gift accept getReceiverZipcode is empty");
+        if (StringUtils.isEmpty(acceptCommand.getReceiverAddress1())) throw new InvalidParamException("Gift accept getReceiverAddress1 is empty");
+        if (StringUtils.isEmpty(acceptCommand.getReceiverAddress2())) throw new InvalidParamException("Gift accept getReceiverAddress2 is empty");
+        if (StringUtils.isEmpty(acceptCommand.getEtcMessage())) throw new InvalidParamException("Gift accept getEtcMessage is empty");
+
+        this.status = Status.ACCEPT;
+        this.receiverName = acceptCommand.getReceiverName();
+        this.receiverPhone = acceptCommand.getReceiverPhone();
+        this.receiverZipcode = acceptCommand.getReceiverZipcode();
+        this.receiverAddress1 = acceptCommand.getReceiverAddress1();
+        this.receiverAddress2 = acceptCommand.getReceiverAddress2();
+        this.etcMessage = acceptCommand.getEtcMessage();
+        this.acceptedAt = ZonedDateTime.now();
+    }
+
+    private boolean isAcceptable() {
+        if (this.expiredAt.isBefore(ZonedDateTime.now())) return false;
+        return this.status == Status.ORDER_COMPLETE || this.status == Status.PUSH_COMPLETE;
     }
 
 }

@@ -1,7 +1,9 @@
 package dev.practice.gift.domain.gift.order;
 
+import dev.practice.gift.domain.gift.GiftCommand;
+
 public interface OrderApiCaller {
     String registerGiftOrder(OrderApiCommand.Register request);
 
-    void updateReceiverInfo();
+    void updateReceiverInfo(String orderToken, GiftCommand.AcceptGift acceptCommand);
 }

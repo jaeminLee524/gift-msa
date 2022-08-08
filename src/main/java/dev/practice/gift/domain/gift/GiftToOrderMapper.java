@@ -3,6 +3,7 @@ package dev.practice.gift.domain.gift;
 import dev.practice.gift.domain.gift.order.OrderApiCommand;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(

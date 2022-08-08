@@ -2,6 +2,7 @@ package dev.practice.gift.domain.gift;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class GiftCommand {
     @Getter @Builder
     public static class RegisterOrderItemOptionGroup {
         private Integer ordering;
-        private String itemOptionName;
+        private String itemOptionGroupName;
         private List<RegisterOrderItemOption> orderItemOptionList;
     }
 
@@ -43,6 +44,17 @@ public class GiftCommand {
         private Integer ordering;
         private String itemOptionName;
         private Long itemOptionPrice;
+    }
+
+    @Getter @Setter
+    public static class AcceptGift {
+        private String giftToken;
+        private String receiverName;
+        private String receiverPhone;
+        private String receiverZipcode;
+        private String receiverAddress1;
+        private String receiverAddress2;
+        private String etcMessage;
     }
 
 }

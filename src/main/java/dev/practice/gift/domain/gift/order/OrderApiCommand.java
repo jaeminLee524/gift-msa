@@ -9,7 +9,7 @@ public class OrderApiCommand {
 
     @Getter @Builder
     public static class Register {
-        private Long buyerId;
+        private Long buyerUserId;
         private String payMethod;
         private List<RegisterOrderItem> orderItemList;
     }
